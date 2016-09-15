@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Mtime" rel="Chapter" href="Mtime.html"><link title="Availability" rel="Section" href="#1_Availability">
+<link title="Time spans" rel="Section" href="#1_Timespans">
+<link title="Passing time" rel="Section" href="#1_Passingtime">
+<link title="Time counters" rel="Section" href="#1_Timecounters">
+<link title="Converting time spans" rel="Section" href="#1_Convertingtimespans">
+<link title="Time scale conversion" rel="Section" href="#convert">
+<link title="Printing" rel="Section" href="#print">
+<link title="Platform support" rel="Section" href="#platform">
+<title>Mtime</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Mtime.html">Mtime</a></h1>
+
+<pre><span class="keyword">module</span> Mtime: <code class="code"><span class="keyword">sig</span></code> <a href="Mtime.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Monotonic wall-clock time.
+<p>
+
+    <code class="code"><span class="constructor">Mtime</span></code> provides access to monotonic wall-clock time. This time
+    increases monotonically and is not subject to operating system
+    calendar time adjustments. Its absolute value has no meaning and
+    is not exposed. It can only be used to measure wall-clock time
+    spans in a single program run.
+<p>
+
+    Time resolution should be nanoseconds but can be less, consult the
+    <a href="Mtime.html#platform">platform support</a> for more information.
+<p>
+
+    <em>Release 0.8.3 - Daniel Bünzli &lt;daniel.buenzl i@erratique.ch&gt; </em><br>
+</div>
+<hr width="100%">
+<br>
+<h1 id="1_Availability">Availability</h1><br>
+
+<pre><span id="VALavailable"><span class="keyword">val</span> available</span> : <code class="type">bool</code></pre><div class="info ">
+<code class="code">available</code> is <code class="code"><span class="keyword">true</span></code> iff monotonic wall-clock time is available. If
+    <code class="code">available</code> is <code class="code"><span class="keyword">false</span></code> time spans always return zero.<br>
+</div>
+<br>
+<h1 id="1_Timespans">Time spans</h1><br>
+
+<pre><span id="TYPEspan"><span class="keyword">type</span> <code class="type"></code>span</span> </pre>
+<div class="info ">
+The type for non-negative time spans.
+<p>
+
+    Span values cannot be constructed directly they represent the
+    difference between two monotonic wall-clock time samples.
+<p>
+
+    If the platform has nanosecond resolution the size of the data
+    type guarantees it can measure up to a approximatively 584 Julian
+    year spans before (silently) rolling over; but remember this is in
+    a single program run.<br>
+</div>
+
+<br>
+<h1 id="1_Passingtime">Passing time</h1><br>
+
+<pre><span id="VALelapsed"><span class="keyword">val</span> elapsed</span> : <code class="type">unit -> <a href="Mtime.html#TYPEspan">span</a></code></pre><div class="info ">
+<code class="code">elapsed ()</code> is the wall-clock time span elapsed since the
+    beginning of the program.<br>
+</div>
+<br>
+<h1 id="1_Timecounters">Time counters</h1><br>
+
+<pre><span id="TYPEcounter"><span class="keyword">type</span> <code class="type"></code>counter</span> </pre>
+<div class="info ">
+The type for monotonic wall-clock time counters.<br>
+</div>
+
+
+<pre><span id="VALcounter"><span class="keyword">val</span> counter</span> : <code class="type">unit -> <a href="Mtime.html#TYPEcounter">counter</a></code></pre><div class="info ">
+<code class="code">counter ()</code> is a counter counting time from now on.<br>
+</div>
+
+<pre><span id="VALcount"><span class="keyword">val</span> count</span> : <code class="type"><a href="Mtime.html#TYPEcounter">counter</a> -> <a href="Mtime.html#TYPEspan">span</a></code></pre><div class="info ">
+<code class="code">count c</code> is is the wall-clock time span elapsed since
+    <code class="code">c</code> was created.<br>
+</div>
+<br>
+<h1 id="1_Convertingtimespans">Converting time spans</h1>
+<p>
+
+    See <a href="Mtime.html#convert">this section</a> for time scale definitions.<br>
+
+<pre><span id="VALto_ns"><span class="keyword">val</span> to_ns</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_ns span</code> is <code class="code">span</code> in nanoseconds (1e-9s).<br>
+</div>
+
+<pre><span id="VALto_us"><span class="keyword">val</span> to_us</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_us span</code> is <code class="code">span</code> in microseconds (1e-6s).<br>
+</div>
+
+<pre><span id="VALto_ms"><span class="keyword">val</span> to_ms</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_ms span</code> is <code class="code">span</code> in milliseconds (1e-3s).<br>
+</div>
+
+<pre><span id="VALto_s"><span class="keyword">val</span> to_s</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_s span</code> is <code class="code">span</code> is seconds.<br>
+</div>
+
+<pre><span id="VALto_min"><span class="keyword">val</span> to_min</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_min span</code> is <code class="code">span</code> in SI-accepted minutes (60s).<br>
+</div>
+
+<pre><span id="VALto_hour"><span class="keyword">val</span> to_hour</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_hour span</code> is <code class="code">span</code> in SI-accepted hours (3600s).<br>
+</div>
+
+<pre><span id="VALto_day"><span class="keyword">val</span> to_day</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_day span</code> is <code class="code">span</code> in SI-accepted days (24 hours, 86400s).<br>
+</div>
+
+<pre><span id="VALto_year"><span class="keyword">val</span> to_year</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> float</code></pre><div class="info ">
+<code class="code">to_year span</code> is <code class="code">span</code> in Julian years (365.25 days, 31'557'600s).<br>
+</div>
+
+<pre><span id="VALto_ns_uint64"><span class="keyword">val</span> to_ns_uint64</span> : <code class="type"><a href="Mtime.html#TYPEspan">span</a> -> int64</code></pre><div class="info ">
+<code class="code">to_ns_uint64</code> is <code class="code">span</code> in nanoseconds as an <em>unsigned</em> 64-bit
+    integer.<br>
+</div>
+<br>
+<h1 id="convert">Time scale conversion</h1>
+<p>
+
+    The following convenience constants relate time scales to seconds.
+    Used as multiplicands they can be used to convert these units
+    to and from seconds.
+<p>
+
+    The constants are defined according to
+    <a href="http://www.bipm.org/en/publications/si-brochure/chapter3.html">SI
+    prefixes</a> on seconds and
+    <a href="http://www.bipm.org/en/publications/si-brochure/table6.html">accepted
+    non-SI units</a>. Years are counted in Julian years (365.25 SI-accepted days)
+    as <a href="http://www.iau.org/publications/proceedings_rules/units/">defined</a>
+    by the International Astronomical Union (IAU).<br>
+
+<pre><span id="VALns_to_s"><span class="keyword">val</span> ns_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">ns_to_s</code> is <code class="code">1e-9</code> the number of seconds in one nanosecond.<br>
+</div>
+
+<pre><span id="VALus_to_s"><span class="keyword">val</span> us_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">us_to_s</code> is <code class="code">1e-6</code>, the number of seconds in one microsecond.<br>
+</div>
+
+<pre><span id="VALms_to_s"><span class="keyword">val</span> ms_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">ms_to_s</code> is <code class="code">1e-3</code>, the number of seconds in one millisecond.<br>
+</div>
+
+<pre><span id="VALmin_to_s"><span class="keyword">val</span> min_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">min_to_s</code> is <code class="code">60.</code>, the number of seconds in one SI-accepted minute.<br>
+</div>
+
+<pre><span id="VALhour_to_s"><span class="keyword">val</span> hour_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">hour_to_s</code> is <code class="code">3600.</code>, the number of seconds in one SI-accepted hour.<br>
+</div>
+
+<pre><span id="VALday_to_s"><span class="keyword">val</span> day_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">day_to_s</code> is <code class="code">86_400.</code>, the number of seconds in one SI-accepted day.<br>
+</div>
+
+<pre><span id="VALyear_to_s"><span class="keyword">val</span> year_to_s</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">year_to_s</code> is <code class="code">31_557_600.</code>, the number of seconds in a Julian year.<br>
+</div>
+
+<pre><span id="VALs_to_ns"><span class="keyword">val</span> s_to_ns</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_ns</code> is <code class="code">1e9</code> the number of nanoseconds in one second.<br>
+</div>
+
+<pre><span id="VALs_to_us"><span class="keyword">val</span> s_to_us</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_us</code> is <code class="code">1e6</code>, the number of microseconds in one second.<br>
+</div>
+
+<pre><span id="VALs_to_ms"><span class="keyword">val</span> s_to_ms</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_ms</code> is <code class="code">1e3</code>, the number of milliseconds in one second.<br>
+</div>
+
+<pre><span id="VALs_to_min"><span class="keyword">val</span> s_to_min</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_min</code> is <code class="code">1. /. 60.</code>, the number of SI-accepted minutes in
+    one second.<br>
+</div>
+
+<pre><span id="VALs_to_hour"><span class="keyword">val</span> s_to_hour</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_hour</code> is <code class="code">1. /. 3600.</code>, the number of SI-accepted hours in
+    one second.<br>
+</div>
+
+<pre><span id="VALs_to_day"><span class="keyword">val</span> s_to_day</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_day</code> is <code class="code">1. /. 86400.</code>, the number of SI-accepted days in
+    one second.<br>
+</div>
+
+<pre><span id="VALs_to_year"><span class="keyword">val</span> s_to_year</span> : <code class="type">float</code></pre><div class="info ">
+<code class="code">s_to_year</code> is <code class="code">1. /. 31_557_600.</code>, the number of Julian years
+    in one second.<br>
+</div>
+<br>
+<h1 id="print">Printing</h1><br>
+
+<pre><span id="VALpp_span"><span class="keyword">val</span> pp_span</span> : <code class="type">Format.formatter -> <a href="Mtime.html#TYPEspan">span</a> -> unit</code></pre><div class="info ">
+<code class="code">pp_span ppf span</code> prints an unspecified representation of
+    <code class="code">span</code> on <code class="code">ppf</code>. The representation is not fixed-width,
+    depends on the magnitude of <code class="code">span</code> and uses locale
+    independent <a href="Mtime.html#convert">standard time scale</a> abbreviations.<br>
+</div>
+
+<pre><span id="VALpp_span_s"><span class="keyword">val</span> pp_span_s</span> : <code class="type">Format.formatter -> float -> unit</code></pre><div class="info ">
+<code class="code">pp_span_s</code> prints like <a href="Mtime.html#VALpp_span"><code class="code"><span class="constructor">Mtime</span>.pp_span</code></a> does but on a seconds floating
+    point time span value (which can be negative).<br>
+</div>
+<br>
+<h1 id="platform">Platform support</h1>
+<p>
+
+    <ul>
+<li>Platforms with a POSIX clock (includes Linux) use
+       <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/clock_gettime.html"><code class="code">clock_gettime</code></a>
+       with CLOCK_MONOTONIC.</li>
+<li>Darwin uses
+       <a href="https://developer.apple.com/library/mac/qa/qa1398/_index.html"><code class="code">mach_absolute_time</code></a>.</li>
+<li>Windows is TODO, use
+       <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa373083%28v=vs.85%29.aspx">Performance counters</a>. </li>
+<li>JavaScript uses
+       <a href="http://www.w3.org/TR/hr-time/"><code class="code">performance.now</code></a> (consult
+       <a href="http://caniuse.com/#feat=high-resolution-time">availability</a>)
+       which returns a
+       <a href="http://www.w3.org/TR/hr-time/#sec-DOMHighResTimeStamp">double
+       floating point value</a> in milliseconds with
+       resolution up to the microsecond.</li>
+</ul>
+<br>
+</body></html>
